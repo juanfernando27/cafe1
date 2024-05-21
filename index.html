@@ -29,10 +29,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+            <a class="nav-link active" aria-current="page" href="http://127.0.0.1:5500/cafe1/index.html#about">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#about">Nosotros</a>
+            <a class="nav-link" href="#about">Lista de tareas</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#menu">Menu</a>
@@ -47,30 +47,14 @@
             <a class="nav-link" href="#contact">Contactos</a>
           </li>
           <li class="nav-item">
-<<<<<<< HEAD
             <a class="nav-link" href="#blogs">Blogs Destacados</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#blogs">Blogs Destacados</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#blogs">Lista</a>
-          </li>
-         
-         
-=======
-            <a class="nav-link" href="#Noticias">Noticias Destacadas</a>
-         </li>
          <li class="nav-item">
           <a class="nav-link" href="#blogs">Blogs</a>
        </li>
        <li class="nav-item">
         <a class="nav-link" href="#lista">Lista</a>
       </li>
->>>>>>> develop_Juan
-         
-
-         
         </ul>
         <form class="d-flex">
           <input class="form-control me-2" type="Buscar" placeholder="Buscar" aria-label="Buscar">
@@ -419,8 +403,218 @@
 <!-- Calculadora -->
 <BR></BR>
 
+<!--lista -->
+<div class="about" id="about">
+  <div class="container">
+      <div class="heading">Agregar <span>borrar tareas</span></div>
+      <div class="row">
+          <div class="col-md-6">
+              <div class="card">
+                  <img src="./images/cafecolombiano.jpeg" alt="Café Colombiano">
+              </div>
+          </div>
+<div class="col-md-6">
+  <div class="product-list text-center">
+      <h1>LISTA DE TAREAS</h1>
+      <form class="d-flex mb-3" id="add-form">
+          <input class="form-control me-2" type="text" id="productInput" placeholder="Agregar café" aria-label="Agregar café">
+          <button class="btn btn-outline-success" type="submit">Agregar</button>
+      </form>
+      <select id="categorySelect" class="form-select mb-3">
+          <option value="all">Todas</option>
+          <option value="premium">Cafés premium</option>
+          <option value="iced">Cafés helados</option>
+          <option value="new">Nuevos</option>
+      </select>
+      <br>
+      <label for="filterSelect">Filtrar por categoría:</label>
+      <select id="filterSelect" class="form-select mb-3" onchange="filterProductItems()">
+          <option value="all">Todas</option>
+          <option value="premium">Cafés premium</option>
+          <option value="iced">Cafés helados</option>
+          <option value="new">Nuevos</option>
+      </select>
+      <ul id="productList" class="list-unstyled"></ul>
+  </div>
+  <button id="about-btn">Aprende más</button>
+</div>
+</div>
+
+<script>
+  // Lista inicial de productos
+  const productItems = [
+      { name: "Café premium", category: "premium" },
+      { name: "Café helado", category: "iced" },
+      { name: "Nuevo café", category: "new" }
+  ];
+
+  // Función para mostrar la lista de productos
+  function displayProductList(items) {
+      const productListElement = document.getElementById('productList');
+      productListElement.innerHTML = '';
+
+      items.forEach((item, index) => {
+          const listItem = document.createElement('li');
+          listItem.className = 'd-flex justify-content-between align-items-center mb-2';
+
+          const itemSpan = document.createElement('span');
+          itemSpan.textContent = `${item.name} (${item.category})`;
+          listItem.appendChild(itemSpan);
+
+          const editButton = createEditButton(index);
+          listItem.appendChild(editButton);
+
+          const deleteButton = createDeleteButton(index);
+          listItem.appendChild(deleteButton);
+
+          productListElement.appendChild(listItem);
+      });
+  }
+
+  // Función para crear un botón de edición
+  function createEditButton(index) {
+      const editButton = document.createElement('button');
+      editButton.textContent = 'Editar';
+      editButton.className = 'btn btn-warning btn-sm me-2';
+      editButton.onclick = () => editProductItem(index);
+      return editButton;
+  }
+
+  // Función para crear un botón de eliminación
+  function createDeleteButton(index) {
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Eliminar';
+      deleteButton.className = 'btn btn-danger btn-sm';
+      deleteButton.onclick = () => deleteProductItem(index);
+      return deleteButton;
+  }
+
+  // Función para agregar un producto a la lista
+  document.getElementById('add-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      addProductItem();
+  });
+
+  function addProductItem() {
+      const productInput = document.getElementById('productInput');
+      const categorySelect = document.getElementById('categorySelect');
+      const newItem = productInput.value.trim();
+      const category = categorySelect.value;
+
+      if (newItem) {
+          productItems.push({ name: newItem, category: category });
+          productInput.value = '';
+          displayProductList(productItems);
+      } else {
+          alert("Por favor, ingresa un producto.");
+      }
+  }
+
+  // Función para editar un producto de la lista
+  function editProductItem(index) {
+      const newItem = prompt("Editar producto:", productItems[index].name);
+      if (newItem) {
+          productItems[index].name = newItem.trim();
+          displayProductList(productItems);
+      }
+  }
+
+  // Función para eliminar un producto de la lista
+  function deleteProductItem(index) {
+      productItems.splice(index, 1);
+      displayProductList(productItems);
+  }
+
+  // Función para filtrar la lista de productos por categoría
+  function filterProductItems() {
+      const filterSelect = document.getElementById('filterSelect');
+      const category = filterSelect.value;
+
+      if (category === "all") {
+          displayProductList(productItems);
+      } else {
+          const filteredItems = productItems.filter(item => item.category === category);
+          displayProductList(filteredItems);
+      }
+  }
+
+  // Mostrar la lista inicial de productos
+  displayProductList(productItems);
+</script>
+<!-- Lista-->
+<!-- Nosotros-->
+<div class="about" id="about">
+  <div class="container">
+    <div class="heading"> Acerca de <span>Nosotros</span></div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <img src="./images/about.png" alt="">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h3>¿Qué hace especial a nuestro café?</h3>
+        
+        <p>Nuestra empresa es mas que una simple empresa, Si buscas un café de alta calidad con un sabor excepcional, nuestro café es la opción perfecta. Disfruta de una taza de café y descubre por qué es uno de los mejores cafés del mundo, En cada taza de café encontraras un universo de sabores, aromas y significados que lo convierten en algo más que una simple bebida.<br>
+        
+          <br>Más que un producto, nuestro café es una experiencia, un viaje a través de los paisajes cafeteros, un encuentro con la calidez de su gente que lo cultiva.<br>
+          <br>Nuestro lema ¡DONDE EL CAFE CUENTA HISTORIAS!<br>
+          <br></p>
+
+        <button id="about-btn">Aprende más.</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="blogs" id="blogs">
+  <h1>Nuestro equipo <span>de trabajo</span></h1>
+
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-md-4 py-3 py-md-0">
+      <div class="card">
+        <img src="./images/foto1J.jpg" alt="">
+        <div class="card-body">
+          <h3>Primer Administrador</h3>
+          <p>JUAN FERNANDO URBANO</p>
+          <button id="blogbtn">Mas Información.</button>
+        </div>
+      </div>  
+      </div>
+      <div class="col-md-4 py-3 py-md-0">
+      <div class="card">
+        <img src="./images/fotoS.jpg" alt="20">
+        <div class="card-body">
+          <h3>Segunda Administradora</h3>
+         
+          <p>SOFIA FERNANDA PORTILLA</p>
+          <button id="blogbtn">Mas Información.</button>
+        </div>
+      </div>  
+      </div>
+      <div class="col-md-4 py-3 py-md-0">
+      <div class="card">
+        <img src="./images/chhef.png" alt="">
+        <div class="card-body">
+          <h3>Gran Chef</h3>
+          
+          <p>CRISTIAN MAURICIO TORRES</p>
+          <button id="blogbtn">Mas Información.</button>
+        </div>
+      </div>  
+      </div>
+      
+    </div>
+
+  </div>
 
 
+ </section>
+
+<!-- Nosotros-->
 <!-- galeria-->
 <div class="container" id="gallary">
   <h1>Nuestra <span>Galeria</span></h1>
@@ -568,37 +762,7 @@
   
   
      </section>
-     <!-- blogs -->
-
-
-
-
-
-
-
-
-
-
-   <!-- final -->
-   <footer id="footer">
-    <div class="footer-logo text-center"><img src="images/logo1.jpg" alt=""></div>
-    <div class="socail-links text-center">
-      <i class="fa-brands fa-twitter"></i>
-      <i class="fa-brands fa-facebook-f"></i>
-      <i class="fa-brands fa-instagram"></i>
-      <i class="fa-brands fa-youtube"></i>
-      <i class="fa-brands fa-pinterest-p"></i>
-    </div>
-    <div class="credite text-center">
-        <a href="#"> Inicio </a>
-    </div>
-    <div class="copyright text-center">
-     
-  </div>
-</footer>
-   <!-- final -->
-
-    
+     <!-- blogs --> 
     <div class="container" style="margin-top: 100px;">
       <hr>
   </div>
@@ -635,6 +799,32 @@
   <!-- offer -->
   
   
+<!-- Contactos -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <div class="heading6">Contacta <span>Con Nosotros</span></div>
+          <p>Ponte en contacto con nosotros y ten una gran experiencia con una deliciosa tasa de café.
+            <br>Pasa un momento agradable con tu familia y amigos.
+          </p>
+          <input class="form-control" type="text" placeholder="Nombre" aria-label="default input example"><br>
+          <input class="form-control" type="email" placeholder="Correo Electrónico" aria-label="default input example"><br>
+          <input class="form-control" type="number" placeholder="Número" aria-label="default input example"><br>
+          <button id="contact-btn">Enviar Mensaje</button>
+        </div>
+        <div class="col-md-5" id="col">
+          <h1>Información</h1>
+          <p><i class="fa-regular fa-envelope"></i> lasmaspinta@gmail.com</p>
+          <p><i class="fa-solid fa-phone"></i> +57 3157895514</p>
+          <p><i class="fa-solid fa-building-columns"></i>Pasto, Nariño, Colombia </p>
+          <p>Ponte en contacto con nosotros y ten una gran experiencia con una deliciosa tasa de café.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+<!-- Contactos -->
+
      <!-- footer -->
      <footer id="footer">
       <div class="footer-logo text-center"><img src="./images/logo_cafee.png" alt=""></div>
