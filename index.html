@@ -342,36 +342,34 @@
 <!-- Calculadora -->
 <section id="calculator" class="calculator">
   <div class="container">
-      <div class="heading4"></div>
-      <div id="appBg">
-          <form name="calculator">
-              <input type="text" name="ans" id="ans" autocomplete="off" readonly>
-              <BR></BR>
-              <div>
-                <center>
-                  <input type="button" value="7" onclick="appendValue('7')" class="gray">
-                  <input type="button" value="8" onclick="appendValue('8')" class="gray">
-                  <input type="button" value="9" onclick="appendValue('9')" class="gray">
-                  <input type="button" value="4" onclick="appendValue('4')" class="gray">
-                  <input type="button" value="5" onclick="appendValue('5')" class="gray">
-                  <input type="button" value="6" onclick="appendValue('6')" class="gray">
-                  <input type="button" value="1" onclick="appendValue('1')" class="gray">
-                  <input type="button" value="2" onclick="appendValue('2')" class="gray">
-                  <input type="button" value="3" onclick="appendValue('3')" class="gray">
-                  <input type="button" value="X" onclick="appendValue('*')" class="orange">
-                  <input type="button" value="0" onclick="appendValue('0')" class="gray">
-                  <input type="button" value="/" onclick="appendValue('/')" class="orange">
-                  <input type="button" value="+" onclick="appendValue('+')" class="orange">
-                  <input type="button" value="-" onclick="appendValue('-')" class="orange">
-                  <input type="reset" value="C" onclick="clearValue()">
-                  <input type="button" value="=" onclick="calculate()">
-              </div>
-             
-              <p id="resultado de la compras "></p>
-              
-          </form>
-          
-      </div>
+    <div class="heading4">Calculadora</div>
+    <div id="appBg">
+      <form name="calculator">
+        <input type="text" name="ans" id="ans" autocomplete="off" readonly>
+        <br><br>
+        <div>
+          <center>
+            <input type="button" value="7" onclick="appendValue('7')" class="gray">
+            <input type="button" value="8" onclick="appendValue('8')" class="gray">
+            <input type="button" value="9" onclick="appendValue('9')" class="gray">
+            <input type="button" value="4" onclick="appendValue('4')" class="gray">
+            <input type="button" value="5" onclick="appendValue('5')" class="gray">
+            <input type="button" value="6" onclick="appendValue('6')" class="gray">
+            <input type="button" value="1" onclick="appendValue('1')" class="gray">
+            <input type="button" value="2" onclick="appendValue('2')" class="gray">
+            <input type="button" value="3" onclick="appendValue('3')" class="gray">
+            <input type="button" value="0" onclick="appendValue('0')" class="gray">
+            <input type="button" value="+" onclick="appendValue('+')" class="orange">
+            <input type="button" value="-" onclick="appendValue('-')" class="orange">
+            <input type="button" value="X" onclick="appendValue('*')" class="orange">
+            <input type="button" value="/" onclick="appendValue('/')" class="orange">
+            <input type="reset" value="C" onclick="clearValue()">
+            <input type="button" value="=" onclick="calculate()">
+          </center>
+        </div>
+        <p id="resultado"></p>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -387,7 +385,8 @@
 
   function calculate() {
       try {
-          const result = eval(document.calculator.ans.value);
+          let expression = document.calculator.ans.value.replace(/X/g, '*'); // Replace X with *
+          const result = eval(expression);
           document.calculator.ans.value = result;
           document.getElementById('resultado').innerText = 'Resultado: ' + result;
       } catch (e) {
@@ -396,6 +395,7 @@
       }
   }
 </script>
+
 </center>
 <!-- Calculadora -->
 <BR></BR>
